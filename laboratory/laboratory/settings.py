@@ -22,10 +22,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'users.apps.UsersConfig',
     'users.authconfig.CustomAuthConfig',
+    'users.apps.UsersConfig',
     'laboratories.apps.LaboratoriesConfig',
     'reagents.apps.ReagentsConfig',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
@@ -37,7 +38,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'users.middlewares.auth_required_middleware.AuthRequiredMiddleware',
+    'core.middlewares.auth_required_middleware.AuthRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'laboratory.urls'
@@ -90,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Yerevan'
 
 USE_I18N = True
 
