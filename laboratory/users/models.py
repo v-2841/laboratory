@@ -12,11 +12,9 @@ class User(AbstractUser):
         unique=True,
         verbose_name='Ник',
         validators=[validate_username],
-    )
-    email = models.EmailField(
-        blank=False,
-        unique=True,
-        verbose_name='Электронная почта',
+        error_messages={
+            'unique': 'Пользователь с таким ником уже существует',
+        },
     )
     first_name = models.CharField(
         max_length=settings.USER_PROFILE_LENGHT,
@@ -28,46 +26,11 @@ class User(AbstractUser):
         blank=False,
         verbose_name='Фамилия',
     )
-    laboratory_staff = models.BooleanField(
-        default=False,
-        verbose_name='Администратор лаборатории',
-        help_text='Указывает, что пользователь '
-                  + 'является администратором лаборатории',
-    )
 
     class Meta:
-        ordering = ('username',)
+        ordering = ('last_name', 'first_name',)
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
         return self.username
-
-
-class Invitation(models.Model):
-    sender = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name='Отправитель',
-    )
-    email = models.EmailField(
-        blank=False,
-        verbose_name='Электронная почта',
-    )
-    token = models.CharField(
-        max_length=100,
-        blank=False,
-        verbose_name='Токен',
-    )
-    is_used = models.BooleanField(
-        default=False,
-        verbose_name='Использован',
-    )
-
-    class Meta:
-        ordering = ('email',)
-        verbose_name = 'Приглашение'
-        verbose_name_plural = 'Приглашения'
-
-    def __str__(self):
-        return self.sender.username + ' to ' + self.email

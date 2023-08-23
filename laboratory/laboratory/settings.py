@@ -16,13 +16,16 @@ ALLOWED_HOSTS = [i.strip() for i in os.getenv('ALLOWED_HOSTS', '127.0.0.1, local
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    # 'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
     'users.apps.UsersConfig',
+    'users.authconfig.CustomAuthConfig',
+    'laboratories.apps.LaboratoriesConfig',
+    'reagents.apps.ReagentsConfig',
 ]
 
 MIDDLEWARE = [
@@ -34,14 +37,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'users.middlewares.auth_required_middleware.AuthRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'laboratory.urls'
 
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,6 +97,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
