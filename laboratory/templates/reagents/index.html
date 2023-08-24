@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Реактивы
+{% endblock %}
+{% block content %}
+  <h1>Реактивы</h1>
+  <table class="table" id="sortTable">
+    <thead>
+      <tr>
+        <th scope="col">Номер</th>
+        <th scope="col">Название реактива</th>
+        <th scope="col">Марка</th>
+        <th scope="col">Годен до</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for reagent in page_obj %}
+      <tr>
+        <td> {{ reagent.index }} </td>
+        <td> {{ reagent.name }} </td>
+        <td> {{ reagent.grade }} </td>
+        <td> {{ reagent.expiration_date }} </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    new DataTable('#sortTable', {
+      lengthMenu: [
+        [10, 50, 100, -1],
+        [10, 50, 100, 'Все']
+      ],
+      language: {
+        url: "{% static "DataTables-1.13.6/js/ru.json" %}",
+    },
+    });
+  </script>
+{% endblock %}

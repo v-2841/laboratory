@@ -23,14 +23,12 @@
               </div>
             {% endfor %}
         {% endif %}
-
         <form method="post"
           {% if action_url %}
             action="{% url action_url %}"
           {% endif %}
         >
         {% csrf_token %}
-
         {% for field in form %}
           <div class="form-group row my-3"
             {% if field.field.required %} 
@@ -46,7 +44,7 @@
                 {% endif %}
             </label>
             <div>
-            {{ field|addclass:'form-control' }}
+            {{ field|addclass:"form-control mt-2" }}
               {% if field.help_text %}
                 <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
                   {{ field.help_text|safe }}
@@ -56,9 +54,12 @@
           </div>
         {% endfor %}
         <div style="text-align:center">
-          <button type="submit" class="btn btn-primary mt-2 mb-2">
+          <button type="submit" class="btn btn-primary">
             Войти
           </button>
+          <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Обратитесь к администратору">
+            <button class="btn btn-secondary" type="button" disabled>Забыли пароль?</button>
+          </span>
         </div>
         </form>
       </div>

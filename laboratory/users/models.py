@@ -10,7 +10,7 @@ class User(AbstractUser):
         max_length=settings.USER_PROFILE_LENGHT,
         blank=False,
         unique=True,
-        verbose_name='Ник',
+        verbose_name='Логин',
         validators=[validate_username],
         error_messages={
             'unique': 'Пользователь с таким ником уже существует',

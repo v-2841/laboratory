@@ -6,6 +6,8 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('users.urls', namespace='users')),
+    path('reagents/', include('reagents.urls', namespace='reagents')),
+    path('', include('laboratories.urls', namespace='laboratories')),
 ]
 
 if settings.DEBUG:

@@ -56,6 +56,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.year.year',
             ],
         },
     },
@@ -107,3 +108,7 @@ INTERNAL_IPS = ['127.0.0.1']
 AUTH_USER_MODEL = 'users.User'
 
 USER_PROFILE_LENGHT = 200
+VIEW_NUM = 10
+
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'laboratories:main'

@@ -5,7 +5,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+    <script src="{% static "js/bootstrap.bundle.js" %}"></script>
+    <script src="{% static "js/jquery-3.7.0.min.js" %}"></script>
+    <script src="{% static "DataTables-1.13.6/js/jquery.dataTables.min.js" %}"></script>
+    <script src="{% static "DataTables-1.13.6/js/dataTables.bootstrap5.min.js" %}"></script>
+    <link rel="stylesheet" href="{% static "DataTables-1.13.6/css/dataTables.bootstrap5.min.css" %}">
     <link rel="apple-touch-icon" sizes="180x180" href={% static "img/fav/apple-touch-icon.png"%}>
+    <link rel="icon" type="image" href={% static "img/fav/favicon.ico"%}>
     <link rel="icon" type="image/png" sizes="32x32" href={% static "img/fav/favicon-32x32.png"%}>
     <link rel="icon" type="image/png" sizes="16x16" href={% static "img/fav/favicon-16x16.png"%}>
     <link rel="manifest" href={% static "img/fav/site.webmanifest"%}>
@@ -17,12 +23,6 @@
         <div>Место для заголовка</div>
       {% endblock %}
     </title>
-    <script src="{% static "js/bootstrap.bundle.js" %}"></script>
-    <script>
-      $(document).ready(function(){
-          $('[data-bs-toggle="popover"]').popover();  
-      });
-      </script>
   </head>
   <body>
     <header>{% include 'includes/header.html' %}</header>
@@ -31,6 +31,10 @@
         {% block content %}
           <div>Место основного контента</div>
         {% endblock %}
+        <script>
+          const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+          const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+        </script>
       </div>
     </main>
     <footer class="border-top text-center py-3">
