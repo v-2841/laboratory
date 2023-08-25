@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from reagents.models import Reagent, ReagentName
+from reagents.models import Reagent
 
 
 class ReagentAdmin(admin.ModelAdmin):
@@ -8,9 +8,4 @@ class ReagentAdmin(admin.ModelAdmin):
     search_fields = ['name__name']
 
 
-class ReagentNameAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
 admin.site.register(Reagent, ReagentAdmin)
-admin.site.register(ReagentName, ReagentNameAdmin)

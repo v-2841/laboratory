@@ -11,40 +11,26 @@ GRADES = [
 ]
 
 
-class ReagentName(models.Model):
+class Reagent(models.Model):
+    index = models.PositiveSmallIntegerField(
+        unique=True,
+        null=True,
+        verbose_name='Индекс',
+    )
     name = models.CharField(
         max_length=200,
         unique=True,
         verbose_name='Название реактива',
     )
-
-    class Meta:
-        ordering = ('name',)
-        verbose_name = 'Название реактива'
-        verbose_name_plural = 'Названия реактивов'
-
-    def __str__(self):
-        return self.name
-
-
-class Reagent(models.Model):
-    index = models.PositiveSmallIntegerField(
-        unique=True,
-        verbose_name='Индекс',
-    )
-    name = models.ForeignKey(
-        ReagentName,
-        on_delete=models.CASCADE,
-        verbose_name='Название реактива',
-    )
     grade = models.CharField(
         max_length=10,
         choices=GRADES,
-        blank=True,
+        null=True,
         verbose_name='Марка',
     )
     expiration_date = models.DateField(
         verbose_name='Годен до',
+        null=True,
     )
 
     class Meta:
@@ -53,4 +39,4 @@ class Reagent(models.Model):
         verbose_name_plural = 'Реактивы'
 
     def __str__(self):
-        return self.name.name
+        return self.name

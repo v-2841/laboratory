@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
   <h1>Реактивы</h1>
+  <a href="{% url 'reagents:create' %}" class="btn btn-primary mb-4" >Добавить реактив</a>
   <table class="table" id="sortTable">
     <thead>
       <tr>
@@ -18,7 +19,7 @@
       {% for reagent in page_obj %}
       <tr>
         <td> {{ reagent.index }} </td>
-        <td> {{ reagent.name }} </td>
+        <td> <a href="{% url 'reagents:edit' reagent.id %}" class="text-decoration-none" >{{ reagent.name }}</a> </td>
         <td> {{ reagent.grade }} </td>
         <td> {{ reagent.expiration_date }} </td>
       </tr>
