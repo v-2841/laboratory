@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
 
@@ -6,13 +7,15 @@ from reagents.forms import ReagentForm
 from reagents.models import Reagent
 
 
-def index(request):
+@permission_required('reagents.view_reagent', raise_exception=True)
+def reagent_index(request):
     context = {
         'page_obj': Reagent.objects.all(),
     }
     return render(request, 'reagents/index.html', context)
 
 
+@permission_required('reagents.add_reagent', raise_exception=True)
 def reagent_create(request):
     form = ReagentForm(
         request.POST or None,
@@ -25,6 +28,7 @@ def reagent_create(request):
     return redirect('reagents:edit', reagent_id=reagent.id)
 
 
+@permission_required('reagents.change_reagent', raise_exception=True)
 def reagent_edit(request, reagent_id):
     reagent = get_object_or_404(Reagent, id=reagent_id)
     form = ReagentForm(
@@ -43,6 +47,7 @@ def reagent_edit(request, reagent_id):
     return redirect('reagents:edit', reagent_id=reagent_id)
 
 
+@permission_required('reagents.delete_reagent', raise_exception=True)
 @require_http_methods(["POST"])
 def reagent_delete(request, reagent_id):
     reagent = get_object_or_404(Reagent, id=reagent_id)

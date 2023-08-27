@@ -33,4 +33,7 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return self.username
+        return self.get_full_name()
+
+    def get_full_name(self):
+        return f'{self.last_name} {self.first_name}'

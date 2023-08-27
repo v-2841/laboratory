@@ -12,9 +12,10 @@ GRADES = [
 
 
 class Reagent(models.Model):
-    index = models.PositiveSmallIntegerField(
+    index = models.PositiveIntegerField(
         unique=True,
         null=True,
+        blank=True,
         verbose_name='Индекс',
     )
     name = models.CharField(
@@ -26,11 +27,23 @@ class Reagent(models.Model):
         max_length=10,
         choices=GRADES,
         null=True,
+        blank=True,
         verbose_name='Марка',
+    )
+    amount = models.PositiveIntegerField(
+        verbose_name='Количество, г',
+        null=True,
+        blank=True,
+    )
+    manufacture_date = models.DateField(
+        verbose_name='Дата производства',
+        null=True,
+        blank=True,
     )
     expiration_date = models.DateField(
         verbose_name='Годен до',
         null=True,
+        blank=True,
     )
 
     class Meta:

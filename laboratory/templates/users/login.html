@@ -1,69 +1,51 @@
 {% extends "base.html" %}
-{% block title %}Войти{% endblock %}
+{% block title %}
+  Войти
+{% endblock title %}
 {% block content %}
-{% load user_filters %}
-<div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">
-        Войти на сайт
-      </div>
-      <div class="card-body">
-        {% if form.errors %}
-          {% for field in form %}
-            {% for error in field.errors %}
-              <div class="alert alert-danger">
-                {{ error|escape }}
+  {% load user_filters %}
+  <div class="d-flex justify-content-center">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Войти на сайт</div>
+        <div class="card-body">
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+          {% endif %}
+          <form method="post"
+                {% if action_url %} action="{% url action_url %}" {% endif %}>
+            {% csrf_token %}
+            {% for field in form %}
+              <div class="form-group row my-3"
+                   {% if field.field.required %} aria-required="true" {% else %} aria-required="false" {% endif %}>
+                <label for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                  {% if field.field.required %}<span class="required text-danger">*</span>{% endif %}
+                </label>
+                <div>
+                  {{ field|addclass:"form-control mt-2" }}
+                  {% if field.help_text %}
+                    <small id="{{ field.id_for_label }}-help" class="form-text text-muted">{{ field.help_text|safe }}</small>
+                  {% endif %}
+                </div>
               </div>
             {% endfor %}
-          {% endfor %}
-          {% for error in form.non_field_errors %}
-            <div class="alert alert-danger">
-              {{ error|escape }}
+            <div style="text-align:center">
+              <button type="submit" class="btn btn-primary">Войти</button>
+              <span class="d-inline-block"
+                    tabindex="0"
+                    data-bs-toggle="popover"
+                    data-bs-trigger="hover focus"
+                    data-bs-content="Обратитесь к администратору">
+                <button class="btn btn-secondary" type="button" disabled>Забыли пароль?</button>
+              </span>
             </div>
-          {% endfor %}
-        {% endif %}
-        <form method="post"
-          {% if action_url %}
-            action="{% url action_url %}"
-          {% endif %}
-        >
-        {% csrf_token %}
-        {% for field in form %}
-          <div class="form-group row my-3"
-            {% if field.field.required %} 
-              aria-required="true"
-            {% else %}
-              aria-required="false"
-            {% endif %}
-          >
-            <label for="{{ field.id_for_label }}">
-              {{ field.label }}
-                {% if field.field.required %}
-                  <span class="required text-danger">*</span>
-                {% endif %}
-            </label>
-            <div>
-            {{ field|addclass:"form-control mt-2" }}
-              {% if field.help_text %}
-                <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
-                  {{ field.help_text|safe }}
-                </small>
-              {% endif %}
-            </div>
-          </div>
-        {% endfor %}
-        <div style="text-align:center">
-          <button type="submit" class="btn btn-primary">
-            Войти
-          </button>
-          <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Обратитесь к администратору">
-            <button class="btn btn-secondary" type="button" disabled>Забыли пароль?</button>
-          </span>
+          </form>
         </div>
-        </form>
       </div>
     </div>
   </div>
-</div>
-{% endblock %}
+{% endblock content %}

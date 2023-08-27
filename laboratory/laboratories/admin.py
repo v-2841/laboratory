@@ -1,14 +1,16 @@
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry
 
 from laboratories.models import Laboratory
 
 
 class LaboratoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'admin_full_name']
+    list_display = ['name']
 
-    @admin.display(description='Администратор лаборатории')
-    def admin_full_name(self, obj):
-        return f'{obj.admin.last_name} {obj.admin.first_name}'
+
+class LogEntryAdmin(admin.ModelAdmin):
+    date_hierarchy = 'action_time'
 
 
 admin.site.register(Laboratory, LaboratoryAdmin)
+admin.site.register(LogEntry, LogEntryAdmin)

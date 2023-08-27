@@ -1,20 +1,12 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from users.models import User
-
 
 class Laboratory(models.Model):
     name = models.CharField(
         max_length=200,
         unique=True,
         verbose_name='Название лаборатории',
-    )
-    admin = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name='lab_admin',
-        verbose_name='Администратор лаборатории',
     )
 
     class Meta:

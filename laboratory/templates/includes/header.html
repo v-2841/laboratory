@@ -1,57 +1,65 @@
 {% load static %}
 {% load user_filters %}
 {% with request.resolver_match.view_name as view_name %}
-<header>
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: lightskyblue;">
-    <div class="container-fluid ps-5 pe-5" style="max-width:1080px;">
-      <a class="navbar-brand mb-1" href="{% url 'laboratories:main' %}">
-        <img
-          src="{% static 'img/logo.png' %}"
-          width="30"
-          height="30"
-          class="d-inline-block align-top"
-          alt=""
-        />
-        Laboratory
-      </a>
-      <button class="navbar-toggler mb-1 mt-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav nav-pills nav-fill">
-          <li class="nav-item mb-1 mt-1 ms-1 me-1">
-            <a
-              class="nav-link {% if view_name == 'laboratories:main' %}active{% endif %}"
-              href="{% url 'laboratories:main' %}"
-              ><span style="color: white">Главная</span></a
-            >
-          </li>
-          <li class="nav-item mb-1 mt-1 ms-1 me-1">
-            <a
-              class="nav-link {% if view_name == 'reagents:index' %}active{% endif %}"
-              href="{% url 'reagents:index' %}"
-              ><span style="color: white">Реактивы</span></a
-            >
-          </li>
-        </ul>
-        <ul class="navbar-nav nav-pills nav-fill ms-auto">
-          {% if user.is_authenticated %}
-          <div class="dropdown nav-item">
-            <button type="button" style="color: white" class="nav-link dropdown-toggle
-              {% if view_name == 'users:password_change_form' %}active{% endif %}
-              {% if view_name == 'users:logout' %}active{% endif %}"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              {{ user.get_full_name }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end text-center ms-auto" aria-labelledby="navbarDrop">
-              <li><a href="{% url 'users:password_change_form' %}" class="dropdown-item {% if view_name == 'users:password_change_form' %}active{% endif %} mb-1 mt-1">Изменить пароль</a></li>
-              <li><a href="{% url 'users:logout' %}" class="dropdown-item mb-1 mt-1">Выйти</a></li>
-            </ul>
-          </div>
-          {% endif %}
-        </ul>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light"
+         style="background-color: lightskyblue">
+      <div class="container">
+        <a class="navbar-brand mb-1" href="{% url 'laboratories:main' %}">
+          <img src="{% static 'img/logo.png' %}"
+               width="30"
+               height="30"
+               class="d-inline-block align-top"
+               alt="" />
+          {{ laboratory_name }}
+        </a>
+        <button class="navbar-toggler mb-1 mt-1"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav nav-pills nav-fill">
+            <li class="nav-item mb-1 mt-1 ms-1 me-1">
+              <a class="nav-link {% if view_name == 'laboratories:main' %}active{% endif %}"
+                 href="{% url 'laboratories:main' %}"><span style="color: white">Главная</span></a>
+            </li>
+            <li class="nav-item mb-1 mt-1 ms-1 me-1">
+              <a class="nav-link {% if view_name == 'reagents:index' %}active{% endif %}"
+                 href="{% url 'reagents:index' %}"><span style="color: white">Реактивы</span></a>
+            </li>
+            <li class="nav-item mb-1 mt-1 ms-1 me-1">
+              <a class="nav-link {% if view_name == 'results:index' %}active{% endif %}"
+                 href="{% url 'results:index' %}"><span style="color: white">Результаты исследований</span></a>
+            </li>
+          </ul>
+          <ul class="navbar-nav nav-pills nav-fill ms-auto">
+            {% if user.is_authenticated %}
+              <div class="dropdown nav-item">
+                <button type="button"
+                        style="color: white"
+                        class="nav-link dropdown-toggle {% if view_name == 'users:password_change_form' %}active{% endif %} {% if view_name == 'users:logout' %}active{% endif %}"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">{{ user.get_full_name }}</button>
+                <ul class="dropdown-menu dropdown-menu-end text-center ms-auto"
+                    aria-labelledby="navbarDrop">
+                  <li>
+                    <a href="{% url 'users:password_change_form' %}"
+                       class="dropdown-item {% if view_name == 'users:password_change_form' %}active{% endif %} mb-1 mt-1">Изменить пароль</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'users:logout' %}" class="dropdown-item mb-1 mt-1">Выйти</a>
+                  </li>
+                </ul>
+              </div>
+            {% endif %}
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-</header>
+    </nav>
+  </header>
 {% endwith %}

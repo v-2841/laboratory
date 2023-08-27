@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load user_filters %}
+{% block title %}
+  Добавить результат исследования
+{% endblock title %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Добавить результат исследования</div>
+        <div class="card-body">
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+          {% endif %}
+          {% if messages %}
+            <div class="alert alert-success">
+              {% for message in messages %}{{ message }}{% endfor %}
+            </div>
+          {% endif %}
+          <form class="row g-2" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-12">
+              <label for="id_sample_name">
+                Название образца
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.sample_name|addclass:"form-control" }}
+            </div>
+            <div class="col-md-6">
+              <label for="id_analysis_name">
+                Название исследования
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.analysis_name|addclass:"form-control" }}
+            </div>
+            <div class="col-md-6">
+              <label for="id_standard">
+                Нормативный документ
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.standard|addclass:"form-control" }}
+            </div>
+            <div class="col-md-6">
+              <label for="id_result">
+                Результат исследования
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.result|addclass:"form-control" }}
+            </div>
+            <div class="col-md-6">
+              <label for="id_measurement_unit">
+                Единица измерения
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.measurement_unit|addclass:"form-control" }}
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary mt-2">Сохранить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

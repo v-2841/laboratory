@@ -15,16 +15,16 @@ ALLOWED_HOSTS = [i.strip() for i in os.getenv('ALLOWED_HOSTS', '127.0.0.1, local
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    # 'django.contrib.auth',
+    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'users.authconfig.CustomAuthConfig',
     'users.apps.UsersConfig',
     'laboratories.apps.LaboratoriesConfig',
     'reagents.apps.ReagentsConfig',
+    'results.apps.ResultsConfig',
     'core.apps.CoreConfig',
 ]
 
@@ -56,6 +56,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.year.year',
+                'core.context_processors.laboratory_name.laboratory_name',
             ],
         },
     },

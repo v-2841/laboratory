@@ -1,28 +1,45 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% block title %}
   Реактивы
-{% endblock %}
+{% endblock title %}
 {% block content %}
   <h1>Реактивы</h1>
-  <a href="{% url 'reagents:create' %}" class="btn btn-primary mb-4" >Добавить реактив</a>
+  <a href="{% url 'reagents:create' %}" class="btn btn-primary mb-4">Добавить реактив</a>
   <table class="table" id="sortTable">
     <thead>
       <tr>
         <th scope="col">Номер</th>
         <th scope="col">Название реактива</th>
         <th scope="col">Марка</th>
+        <th scope="col">Количество, г</th>
+        <th scope="col">Дата производства</th>
         <th scope="col">Годен до</th>
       </tr>
     </thead>
     <tbody>
       {% for reagent in page_obj %}
-      <tr>
-        <td> {{ reagent.index }} </td>
-        <td> <a href="{% url 'reagents:edit' reagent.id %}" class="text-decoration-none" >{{ reagent.name }}</a> </td>
-        <td> {{ reagent.grade }} </td>
-        <td> {{ reagent.expiration_date }} </td>
-      </tr>
+        <tr>
+          <td>
+            {% if reagent.index %}{{ reagent.index }}{% endif %}
+          </td>
+          <td>
+            <a href="{% url 'reagents:edit' reagent.id %}"
+               class="text-decoration-none">{{ reagent.name }}</a>
+          </td>
+          <td>
+            {% if reagent.grade %}{{ reagent.grade }}{% endif %}
+          </td>
+          <td>
+            {% if reagent.amount %}{{ reagent.amount }}{% endif %}
+          </td>
+          <td>
+            {% if reagent.manufacture_date %}{{ reagent.manufacture_date }}{% endif %}
+          </td>
+          <td>
+            {% if reagent.expiration_date %}{{ reagent.expiration_date }}{% endif %}
+          </td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>
@@ -37,4 +54,4 @@
     },
     });
   </script>
-{% endblock %}
+{% endblock content %}

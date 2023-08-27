@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  {% if not_processed != 0 %}[{{ not_processed }}]{% endif %}
+  Результаты исследований
+{% endblock title %}
+{% block content %}
+  <h1>Результаты исследований</h1>
+  <a href="{% url 'results:create' %}" class="btn btn-primary mb-4">Добавить результат исследования</a>
+  <table class="table table-hover" id="sortTable">
+    <thead>
+      <tr>
+        <th scope="col">Дата создания</th>
+        <th scope="col">Название образца</th>
+        <th scope="col">Название исследования</th>
+        <th scope="col">Нормативный документ</th>
+        <th scope="col">Единица измерения</th>
+        <th scope="col">Результат исследования</th>
+        <th scope="col">Исследователь</th>
+        <th scope="col">Обработан</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in page_obj %}
+        <tr>
+          <td>{{ result.pub_date|date:"Y-m-d\TH:i:s.u" }}</td>
+          <td>{{ result.sample_name }}</td>
+          <td>{{ result.analysis_name }}</td>
+          <td>{{ result.standard }}</td>
+          <td>{{ result.measurement_unit }}</td>
+          <td>{{ result.result }}</td>
+          <td>{{ result.researcher }}</td>
+          <td>
+            {% if result.is_processed %}
+              ✅
+            {% elif not perms.results.change_result %}
+              ❌
+            {% else %}
+              <a href="{% url 'results:edit' result.id %}"
+                 class="text-decoration-none">❌</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    new DataTable('#sortTable', {
+      order: [[7, 'desc'], [0, 'desc']],
+      "createdRow": function(row, data, dataIndex){
+        if(data[7] != "✅"){
+            $(row).addClass('table-danger');
+        }
+      },
+      lengthMenu: [
+        [25, 50, 100, -1],
+        [25, 50, 100, 'Все']
+      ],
+      columnDefs: [
+        {
+            targets: 0,
+            render: DataTable.render.datetime('D MMMM YYYY H:mm')
+        }
+      ],
+      language: {
+        url: "{% static "DataTables-1.13.6/js/ru.json" %}",
+      },
+    });
+  </script>
+{% endblock content %}
