@@ -32,12 +32,12 @@
           <td>{{ result.researcher }}</td>
           <td>
             {% if result.is_processed %}
-              ✅
+              Выполнено
             {% elif not perms.results.change_result %}
-              ❌
+              Не выполнено
             {% else %}
               <a href="{% url 'results:edit' result.id %}"
-                 class="text-decoration-none">❌</a>
+                 class="text-decoration-none">Отметить как выполненное</a>
             {% endif %}
           </td>
         </tr>
@@ -48,7 +48,7 @@
     new DataTable('#sortTable', {
       order: [[7, 'desc'], [0, 'desc']],
       "createdRow": function(row, data, dataIndex){
-        if(data[7] != "✅"){
+        if(data[7] != "Выполнено"){
             $(row).addClass('table-danger');
         }
       },
