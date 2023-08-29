@@ -8,6 +8,9 @@ class Laboratory(models.Model):
         unique=True,
         verbose_name='Название лаборатории',
     )
+    description = models.TextField(
+        verbose_name='Описание',
+    )
 
     class Meta:
         ordering = ('name',)

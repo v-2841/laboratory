@@ -5,7 +5,9 @@
     <nav class="navbar navbar-expand-lg navbar-light"
          style="background-color: #81D8D0">
       <div class="container">
-        <a class="navbar-brand mb-1" href="{% url 'laboratories:main' %}" style="color: #0D72D1;">
+        <a class="navbar-brand mb-1"
+           href="{% url 'laboratories:main' %}"
+           style="color: #0D72D1">
           <img src="{% static 'img/logo.png' %}"
                width="30"
                height="30"
@@ -13,32 +15,31 @@
                alt="" />
           {{ laboratory_name }}
         </a>
-        <button class="navbar-toggler mb-1 mt-1"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav nav-pills nav-fill">
-            <li class="nav-item mb-1 mt-1 ms-1 me-1">
-              <a class="nav-link {% if view_name == 'laboratories:main' %}active{% endif %}"
-                 href="{% url 'laboratories:main' %}"><span style="color: white">Главная</span></a>
-            </li>
-            <li class="nav-item mb-1 mt-1 ms-1 me-1">
-              <a class="nav-link {% if view_name == 'reagents:index' %}active{% endif %}"
-                 href="{% url 'reagents:index' %}"><span style="color: white">Реактивы</span></a>
-            </li>
-            <li class="nav-item mb-1 mt-1 ms-1 me-1">
-              <a class="nav-link {% if view_name == 'results:index' %}active{% endif %}"
-                 href="{% url 'results:index' %}"><span style="color: white">Результаты исследований</span></a>
-            </li>
-          </ul>
-          <ul class="navbar-nav nav-pills nav-fill ms-auto">
-            {% if user.is_authenticated %}
+        {% if not user.is_authenticated %}
+          <a href="{% url 'users:login' %}" class="btn btn-secondary">Войти</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <button class="navbar-toggler mb-1 mt-1"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav nav-pills nav-fill">
+              <li class="nav-item mb-1 mt-1 ms-1 me-1">
+                <a class="nav-link {% if view_name == 'reagents:index' %}active{% endif %}"
+                   href="{% url 'reagents:index' %}"><span style="color: white">Реактивы</span></a>
+              </li>
+              <li class="nav-item mb-1 mt-1 ms-1 me-1">
+                <a class="nav-link {% if view_name == 'results:index' %}active{% endif %}"
+                   href="{% url 'results:index' %}"><span style="color: white">Результаты исследований</span></a>
+              </li>
+            </ul>
+            <ul class="navbar-nav nav-pills nav-fill ms-auto">
               <div class="dropdown nav-item">
                 <button type="button"
                         style="color: white"
@@ -56,9 +57,9 @@
                   </li>
                 </ul>
               </div>
-            {% endif %}
-          </ul>
-        </div>
+            </ul>
+          </div>
+        {% endif %}
       </div>
     </nav>
   </header>

@@ -11,6 +11,7 @@ class AuthRequiredMiddleware(object):
     def __call__(self, request):
         if (not request.user.is_authenticated
                 and request.path != reverse('users:login')
+                and request.path != reverse('laboratories:main')
                 and not re.match(r'^/admin/', request.path)):
             return redirect(
                 f"{reverse('users:login')}?next={request.path}")
