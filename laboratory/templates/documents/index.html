@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+  Нормативные документы
+{% endblock title %}
+{% block content %}
+  <h1>Нормативные документы</h1>
+  <a href="{% url 'documents:create' %}" class="btn btn-primary mb-4">Добавить нормативный документ</a>
+  <table class="table" id="sortTable">
+    <thead>
+      <tr>
+        <th scope="col">Название нормативного документа</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for document in page_obj %}
+        <tr>
+          <td>
+            {% if perms.documents.change_document %}
+              <a href="{% url 'documents:edit' document.id %}"
+                 class="text-decoration-none">{{ document.name }}</a>
+            {% else %}
+              {{ document.name }}
+            {% endif %}
+          </td>
+          <td>
+            <a href="{{ document.file.url }}" class="text-decoration-none">Загрузить</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    new DataTable('#sortTable', {
+      ordering: false,
+      lengthMenu: [
+        [10, 50, 100, -1],
+        [10, 50, 100, 'Все']
+      ],
+      language: {
+        url: "{% static "DataTables-1.13.6/js/ru.json" %}",
+    },
+    });
+  </script>
+{% endblock content %}

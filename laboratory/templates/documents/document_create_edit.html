@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load user_filters %}
+{% block title %}
+  {% if is_edit %}
+    Редактировать нормативный документ
+  {% else %}
+    Добавить нормативный документ
+  {% endif %}
+{% endblock title %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          {% if is_edit %}
+            Редактировать нормативный документ
+          {% else %}
+            Добавить нормативный документ
+          {% endif %}
+        </div>
+        <div class="card-body">
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+          {% endif %}
+          {% if messages %}
+            <div class="alert alert-success">
+              {% for message in messages %}{{ message }}{% endfor %}
+            </div>
+          {% endif %}
+          <form class="row g-2" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-12">
+              <label for="id_name">
+                Название нормативного документа
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.name|addclass:"form-control" }}
+            </div>
+            <div class="col-md-6">
+              <label for="id_file">
+                Файл<span class="required text-danger">*</span>
+              </label>
+              {{ form.file|addclass:"form-control" }}
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary">
+                {% if is_edit %}
+                  Сохранить
+                {% else %}
+                  Добавить
+                {% endif %}
+              </button>
+            </div>
+          </form>
+          {% if is_edit %}
+            <div class="d-flex justify-content-center">
+              <button type="button"
+                      class="btn btn-danger mt-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal">Удалить</button>
+            </div>
+            <div class="modal fade"
+                 id="exampleModal"
+                 tabindex="-1"
+                 aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Удалить нормативный документ?</h1>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                    <form method="post" action="{% url "documents:delete" document.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger">Да</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

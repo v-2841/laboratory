@@ -2,7 +2,7 @@
 {% load user_filters %}
 {% with request.resolver_match.view_name as view_name %}
   <header>
-    <nav class="navbar navbar-expand-lg navbar-light"
+    <nav class="navbar navbar-expand-xl navbar-light"
          style="background-color: #81D8D0">
       <div class="container">
         <a class="navbar-brand mb-1"
@@ -37,6 +37,10 @@
               <li class="nav-item mb-1 mt-1 ms-1 me-1">
                 <a class="nav-link {% if view_name == 'results:index' %}active{% endif %}"
                    href="{% url 'results:index' %}"><span style="color: white">Результаты исследований</span></a>
+              </li>
+              <li class="nav-item mb-1 mt-1 ms-1 me-1">
+                <a class="nav-link {% if view_name == 'documents:index' %}active{% endif %}"
+                   href="{% url 'documents:index' %}"><span style="color: white">Нормативные документы</span></a>
               </li>
             </ul>
             <ul class="navbar-nav nav-pills nav-fill ms-auto">

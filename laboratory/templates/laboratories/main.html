@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% load user_filters %}
-{% block title %}Главная{% endblock title %}
+{% block title %}
+  Главная
+{% endblock title %}
 {% block content %}
-<img class="card-img mb-4 mt-4" src={% static "img/main1.jpg" %} style="object-fit: contain;">
-{{ description|linebreaksbr }}
+  <img class="card-img mb-4 mt-4"
+       src="{% static "img/main1.jpg" %}"
+       style="object-fit: contain">
+  {{ description|safe }}
 {% endblock content %}
