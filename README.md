@@ -52,7 +52,7 @@ python manage.py runserver
 ```
 
 ## Иницализация
-Создать супер пользователя:
+Создать суперпользователя:
 ```
 python manage.py createsuperuser
 ```
