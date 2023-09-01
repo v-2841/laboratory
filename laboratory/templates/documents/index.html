@@ -25,7 +25,9 @@
             {% endif %}
           </td>
           <td>
-            <a href="{{ document.file.url }}" class="text-decoration-none">Загрузить</a>
+            <a href="{{ document.file.url }}"
+               class="text-decoration-none"
+               target="_blank">Посмотреть</a>
           </td>
         </tr>
       {% endfor %}
@@ -34,6 +36,11 @@
   <script>
     new DataTable('#sortTable', {
       ordering: false,
+      columnDefs: [
+      {
+        targets: 1,
+        className: 'dt-body-right'
+      }],
       lengthMenu: [
         [10, 50, 100, -1],
         [10, 50, 100, 'Все']
