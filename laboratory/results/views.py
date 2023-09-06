@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_http_methods
 
-from results.forms import ResultForm
+from results.forms import ResultForm, ResultNutritionForm
 from results.models import Result
 
 
@@ -30,6 +29,57 @@ def result_create(request):
     return render(request, 'results/result_create.html',
                   {'form': ResultForm(initial={
                       'sample_name': form.cleaned_data['sample_name']})})
+
+
+@permission_required('results.add_result', raise_exception=True)
+def result_nutrition_create(request):
+    form = ResultNutritionForm(
+        request.POST or None,
+    )
+    if not form.is_valid():
+        return render(request,
+                      'results/result_nutrition_create.html', {'form': form})
+    Result.objects.create(
+        sample_name=form.cleaned_data['sample_name'],
+        analysis_name='Массовая доля жира',
+        standard=form.cleaned_data['fat_standard'],
+        measurement_unit='%',
+        result=form.cleaned_data['fat'],
+        researcher=request.user,
+    )
+    Result.objects.create(
+        sample_name=form.cleaned_data['sample_name'],
+        analysis_name='Массовая доля белка',
+        standard=form.cleaned_data['protein_standard'],
+        measurement_unit='%',
+        result=form.cleaned_data['protein'],
+        researcher=request.user,
+    )
+    Result.objects.create(
+        sample_name=form.cleaned_data['sample_name'],
+        analysis_name='Массовая доля углеводов',
+        standard=form.cleaned_data['carbohydrate_standard'],
+        measurement_unit='%',
+        result=form.cleaned_data['carbohydrate'],
+        researcher=request.user,
+    )
+    if not form.cleaned_data['energy_value']:
+        form.cleaned_data['energy_value'] = round(
+            form.cleaned_data['fat'] * form.cleaned_data['fat_multiplier']
+            + form.cleaned_data['protein']
+            * form.cleaned_data['protein_multiplier']
+            + form.cleaned_data['carbohydrate']
+            * form.cleaned_data['carbohydrate_multiplier']
+        )
+    Result.objects.create(
+        sample_name=form.cleaned_data['sample_name'],
+        analysis_name='Энергетическая ценность',
+        standard=form.cleaned_data['energy_value_standard'],
+        measurement_unit='ккал/100 г',
+        result=form.cleaned_data['energy_value'],
+        researcher=request.user,
+    )
+    return redirect('results:index')
 
 
 @permission_required('results.change_result', raise_exception=True)

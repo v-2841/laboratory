@@ -21,6 +21,7 @@ class Reagent(models.Model):
     name = models.CharField(
         max_length=200,
         unique=True,
+        db_index=True,
         verbose_name='Название реактива',
     )
     grade = models.CharField(

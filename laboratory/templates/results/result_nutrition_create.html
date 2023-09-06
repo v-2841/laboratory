@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load user_filters %}
+{% block title %}
+  Добавить результат исследования КБЖУ
+{% endblock title %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Добавить результат исследования КБЖУ</div>
+        <div class="card-body">
+          {% if form.errors %}
+            {% for field in form %}
+              {% for error in field.errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}<div class="alert alert-danger">{{ error|escape }}</div>{% endfor %}
+          {% endif %}
+          <form class="row g-2" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-12">
+              <label for="id_sample_name">
+                Название образца
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.sample_name|addclass:"form-control" }}
+            </div>
+            <div class="col-md-12 mt-4">Жир</div>
+            <div class="col-md-4">
+              <label for="id_fat">
+                Результат, %
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.fat|addclass:"form-control" }}
+            </div>
+            <div class="col-md-4">
+              <label for="id_fat_standard">
+                Стандарт
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.fat_standard|addclass:"form-control" }}
+            </div>
+            <div class="col-md-4">
+              <label for="id_fat_multiplier">
+                Коэффициент
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.fat_multiplier|addclass:"form-control" }}
+            </div>
+            <div class="col-md-12 mt-4">Белок</div>
+            <div class="col-md-4">
+              <label for="id_protein">
+                Результат, %
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.protein|addclass:"form-control" }}
+            </div>
+            <div class="col-md-4">
+              <label for="id_protein_standard">
+                Стандарт
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.protein_standard|addclass:"form-control" }}
+            </div>
+            <div class="col-md-4">
+              <label for="id_protein_multiplier">
+                Коэффициент
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.protein_multiplier|addclass:"form-control" }}
+            </div>
+            <div class="col-md-12 mt-4">Углеводы</div>
+            <div class="col-md-4">
+              <label for="id_carbohydrate">
+                Результат, %
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.carbohydrate|addclass:"form-control" }}
+            </div>
+            <div class="col-md-4">
+              <label for="id_carbohydrate_standard">
+                Стандарт
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.carbohydrate_standard|addclass:"form-control" }}
+            </div>
+            <div class="col-md-4">
+              <label for="id_carbohydrate_multiplier">
+                Коэффициент
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.carbohydrate_multiplier|addclass:"form-control" }}
+            </div>
+            <div class="col-md-12 mt-4">Энергетическая ценность</div>
+            <div class="col-md-8">
+              <label for="id_energy_value">Результат, ккал/100 г (для расчета оставить пустым)</label>
+              {{ form.energy_value|addclass:"form-control" }}
+            </div>
+            <div class="col-md-4">
+              <label for="id_energy_value_standard">
+                Стандарт
+                <span class="required text-danger">*</span>
+              </label>
+              {{ form.energy_value_standard|addclass:"form-control" }}
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-primary mt-2">Сохранить</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
