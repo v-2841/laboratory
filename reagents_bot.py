@@ -12,6 +12,8 @@ updater = Updater(token=os.getenv('TELEGRAM_TOKEN', 'token'))
 
 
 def data_handler(data):
+    if not data:
+        return 'Ничего не найдено!'
     result = ''
     for reagent in data:
         result += (
