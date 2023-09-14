@@ -7,7 +7,7 @@ from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
 
 load_dotenv()
-locale.setlocale(locale.LC_TIME, "ru_RU")
+locale.setlocale(locale.LC_TIME, "ru_RU.UTF-8")
 updater = Updater(token=os.getenv('TELEGRAM_TOKEN', 'token'))
 
 
