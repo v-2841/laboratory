@@ -1,7 +1,7 @@
 import locale
 import os
-import psycopg2
 
+import psycopg2
 from dotenv import load_dotenv
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
