@@ -56,5 +56,6 @@ def reagent_delete(request, reagent_id):
     return redirect('reagents:index')
 
 
+@permission_required('reagents.view_reagent', raise_exception=True)
 def reagents_table(request):
     return reagents_table_xlsx()
