@@ -5,6 +5,7 @@ from django.views.decorators.http import require_http_methods
 
 from reagents.forms import ReagentForm
 from reagents.models import Reagent
+from reagents.utils import reagents_table_xlsx
 
 
 @permission_required('reagents.view_reagent', raise_exception=True)
@@ -53,3 +54,7 @@ def reagent_delete(request, reagent_id):
     reagent = get_object_or_404(Reagent, id=reagent_id)
     reagent.delete()
     return redirect('reagents:index')
+
+
+def reagents_table(request):
+    return reagents_table_xlsx()
