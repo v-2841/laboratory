@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 import openpyxl
 from django.conf import settings
@@ -81,5 +82,5 @@ def reagents_table_xlsx():
             f.seek(0)
             xlsx_data = f.read()
     response = HttpResponse(xlsx_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename="reagents_table.xlsx"'
+    response['Content-Disposition'] = f'attachment; filename="reagents_table_{datetime.now().strftime("%d.%m.%Y")}.xlsx"'
     return response
