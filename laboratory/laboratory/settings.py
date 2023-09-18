@@ -117,4 +117,5 @@ USER_PROFILE_LENGHT = 200
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'laboratories:main'
 
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 CSRF_TRUSTED_ORIGINS = ['https://laboratory.sytes.net', 'http://laboratory.sytes.net']

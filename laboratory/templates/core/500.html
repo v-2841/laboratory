@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}
+  Page 500
+{% endblock title %}
+{% block content %}
+  <div class="page-wrap d-flex flex-row align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-12 text-center">
+          <span class="display-1 d-block">500</span>
+          <div class="mb-4 lead">
+            Внутренняя ошибка сервера.
+            <br>
+            Сервер столкнулся с ситуацией, которую он не знает как обработать.
+          </div>
+          <a href="{% url 'laboratories:main' %}" class="btn btn-link">Перейти на главную</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
