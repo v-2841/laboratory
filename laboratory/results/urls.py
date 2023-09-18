@@ -10,4 +10,5 @@ urlpatterns = [
     path('nutrition_create/',
          views.result_nutrition_create, name='nutrition_create'),
     path('<int:result_id>/', views.result_edit, name='edit'),
+    path('results_table/', views.results_table, name='results_table'),
 ]

@@ -31,15 +31,15 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav nav-pills nav-fill">
               <li class="nav-item mb-1 mt-1 ms-1 me-1">
-                <a class="nav-link {% if view_name == 'reagents:index' %}active{% endif %}"
+                <a class="nav-link {% if view_name == 'reagents:index' %}active{% endif %} {% if view_name == 'reagents:create' %}active{% endif %} {% if view_name == 'reagents:edit' %}active{% endif %}"
                    href="{% url 'reagents:index' %}"><span style="color: white">Реактивы</span></a>
               </li>
               <li class="nav-item mb-1 mt-1 ms-1 me-1">
-                <a class="nav-link {% if view_name == 'results:index' %}active{% endif %}"
+                <a class="nav-link {% if view_name == 'results:index' %}active{% endif %} {% if view_name == 'results:create' %}active{% endif %} {% if view_name == 'results:nutrition_create' %}active{% endif %}"
                    href="{% url 'results:index' %}"><span style="color: white">Результаты исследований</span></a>
               </li>
               <li class="nav-item mb-1 mt-1 ms-1 me-1">
-                <a class="nav-link {% if view_name == 'documents:index' %}active{% endif %}"
+                <a class="nav-link {% if view_name == 'documents:index' %}active{% endif %} {% if view_name == 'documents:create' %}active{% endif %} {% if view_name == 'documents:edit' %}active{% endif %}"
                    href="{% url 'documents:index' %}"><span style="color: white">Нормативные документы</span></a>
               </li>
             </ul>

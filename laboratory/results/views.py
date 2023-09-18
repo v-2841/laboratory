@@ -4,13 +4,18 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from results.forms import ResultForm, ResultNutritionForm
 from results.models import Result
+from results.utils import results_table_xlsx
 
 
 @permission_required('results.view_result', raise_exception=True)
 def result_index(request):
+    results = Result.objects.order_by(
+        '-pub_date').prefetch_related('researcher')[:250]
+    not_processed = sum(
+        1 for result in results if not result.is_processed)
     context = {
-        'page_obj': Result.objects.all(),
-        'not_processed': Result.objects.filter(is_processed=False).count(),
+        'page_obj': results,
+        'not_processed': not_processed,
     }
     return render(request, 'results/index.html', context)
 
@@ -88,3 +93,8 @@ def result_edit(request, result_id):
     result.is_processed = True
     result.save()
     return redirect('results:index')
+
+
+@permission_required('results.view_result', raise_exception=True)
+def results_table(request):
+    return results_table_xlsx()
