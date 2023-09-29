@@ -148,3 +148,4 @@ dmypy.json
 # папки со статикой и медиа
 laboratory/media/
 laboratory/static/admin/
+bot_logs/

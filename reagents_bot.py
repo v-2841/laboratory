@@ -1,19 +1,28 @@
 import locale
+import logging
 import os
+from logging.handlers import RotatingFileHandler
+from pathlib import Path
 
-import psycopg2
+import asyncpg
 from dotenv import load_dotenv
-from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
+from telegram.ext import Application, CommandHandler, MessageHandler, filters
 
 
 load_dotenv()
 locale.setlocale(locale.LC_TIME, "ru_RU.UTF-8")
-updater = Updater(token=os.getenv('TELEGRAM_TOKEN', 'token'))
+Path('bot_logs/').mkdir(exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s, %(name)s, %(levelname)s, %(funcName)s, %(message)s',
+    handlers=[RotatingFileHandler(
+        'bot_logs/main.log', maxBytes=100000, backupCount=10)],
+)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logger = logging.getLogger(__name__)
 
 
-def data_handler(data):
-    if not data:
-        return 'Ничего не найдено!'
+async def data_handler(data):
     result = ''
     for reagent in data:
         result += (
@@ -32,43 +41,53 @@ def data_handler(data):
     return result
 
 
-def search_by_name(name):
-    connection = psycopg2.connect(
-        dbname=os.getenv('POSTGRES_DB', 'laboratory'),
-        user=os.getenv('POSTGRES_USER', 'django_user'),
-        password=os.getenv('POSTGRES_PASSWORD', ''),
-        host=os.getenv('DB_HOST', 'localhost'),
-        port=os.getenv('DB_PORT', 5432)
-    )
-    cursor = connection.cursor()
+async def search_by_name(name):
     try:
-        query = "SELECT * FROM reagents_reagent WHERE name ILIKE %s"
-        cursor.execute(query, ('%' + name + '%',))
-        results = cursor.fetchall()
-        return data_handler(results)
-    except Exception as e:
-        print("Ошибка при выполнении запроса:", e)
-    finally:
-        cursor.close()
-        connection.close()
+        results = await application.bot_data['database'].fetch(
+            f"SELECT * FROM reagents_reagent WHERE name ILIKE '%{name}%'")
+        if not results:
+            return 'Ничего не найдено!'
+        return await data_handler(results)
+    except Exception as error:
+        logger.error(error)
+        return 'Ошибка приложения'
 
 
-def wake_up(update, context):
+async def wake_up(update, context):
     chat = update.effective_chat
-    context.bot.send_message(chat_id=chat.id, text=(
+    await context.bot.send_message(chat_id=chat.id, text=(
         'Привет, я лабораторный помощник! Введите частичное название '
         + 'реактива и я выдам вам информацию о его наличии.')
     )
+    logger.info(f'Пользователь {chat.id} включил бота')
 
 
-def search(update, context):
+async def search(update, context):
     chat = update.effective_chat
     name = update.message.text
-    context.bot.send_message(chat_id=chat.id,
-                             text=search_by_name(name))
+    await context.bot.send_message(chat_id=chat.id,
+                                   text=await search_by_name(name))
+    logger.info(f'Пользователь {chat.id} ищет реактив "{name}"')
 
 
-updater.dispatcher.add_handler(CommandHandler('start', wake_up))
-updater.dispatcher.add_handler(MessageHandler(Filters.text, search))
-updater.start_polling()
-updater.idle()
+async def post_init(application: Application) -> None:
+    application.bot_data['database'] = await asyncpg.connect(
+        database=os.getenv('POSTGRES_DB', 'laboratory'),
+        user=os.getenv('POSTGRES_USER', 'django_user'),
+        password=os.getenv('POSTGRES_PASSWORD', ''),
+        host=os.getenv('DB_HOST', 'localhost'),
+        port=os.getenv('DB_PORT', 5432),
+    )
+
+
+async def post_shutdown(application: Application) -> None:
+    await application.bot_data['database'].close()
+
+
+if __name__ == '__main__':
+    application = Application.builder().token(
+        os.getenv('TELEGRAM_TOKEN', 'token')).post_init(
+            post_init).post_shutdown(post_shutdown).build()
+    application.add_handler(CommandHandler('start', wake_up))
+    application.add_handler(MessageHandler(filters.TEXT, search))
+    application.run_polling()
