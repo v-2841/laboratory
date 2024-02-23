@@ -1,6 +1,7 @@
 import locale
 import os
 from datetime import datetime
+from time import time
 
 import openpyxl
 from django.conf import settings
@@ -30,13 +31,17 @@ def cell_style(cell):
     return cell
 
 
-def results_table_xlsx():
+def results_table_xlsx(marked_results=None):
     locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
     workbook = openpyxl.load_workbook(
         os.path.join(settings.BASE_DIR, 'data', 'results_template.xlsx'))
     sheet = workbook.active
 
-    results = Result.objects.all().prefetch_related('researcher')
+    if marked_results:
+        results = Result.objects.filter(
+            id__in=marked_results).prefetch_related('researcher')
+    else:
+        results = Result.objects.all().prefetch_related('researcher')
     cell_row = START_CELL_ROW
     for result in results:
         cell = sheet.cell(row=cell_row, column=1)
@@ -65,11 +70,15 @@ def results_table_xlsx():
         cell.value = 'Да' if result.is_processed else 'Нет'
         cell_row += 1
     with NamedTemporaryFile() as tmp:
-        tmp.close()
         workbook.save(tmp.name)
         with open(tmp.name, 'rb') as f:
             f.seek(0)
             xlsx_data = f.read()
-    response = HttpResponse(xlsx_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename="results_table_{datetime.now().strftime("%d.%m.%Y")}.xlsx"'
+    response = HttpResponse(xlsx_data, content_type=('application/vnd.openxml'
+                            + 'formats-officedocument.spreadsheetml.sheet'))
+    if marked_results:
+        name = f'results_table_{int(time())}.xlsx'
+    else:
+        name = f'results_table_{datetime.now().strftime("%d.%m.%Y")}.xlsx'
+    response['Content-Disposition'] = f'attachment; filename={name}'
     return response

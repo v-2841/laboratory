@@ -7,7 +7,9 @@
 {% block content %}
   <h1>Результаты исследований</h1>
   <a href="{% url 'results:create' %}" class="btn btn-primary mb-4">Добавить результат исследования</a>
-  <a href="{% url 'results:nutrition_create' %}" class="btn btn-primary mb-4">Добавить результат исследования КБЖУ</a>
+  <a href="{% url 'results:nutrition_create' %}"
+     class="btn btn-primary mb-4">Добавить результат исследования КБЖУ</a>
+  <button class="btn btn-primary mb-4" id="submitResultsButton">Скачать отмеченные исследования</button>
   <a href="{% url 'results:results_table' %}" class="btn btn-primary mb-4">Скачать все исследования</a>
   <table class="table table-hover" id="sortTable">
     <thead>
@@ -20,6 +22,7 @@
         <th scope="col">Результат исследования</th>
         <th scope="col">Исследователь</th>
         <th scope="col">Обработан</th>
+        <th scope="col">Отметить</th>
       </tr>
     </thead>
     <tbody>
@@ -41,6 +44,9 @@
               <a href="{% url 'results:edit' result.id %}"
                  class="text-decoration-none">Отметить как выполненное</a>
             {% endif %}
+          </td>
+          <td>
+            <input type="checkbox" class="resultCheckbox" value="{{ result.id }}">
           </td>
         </tr>
       {% endfor %}
@@ -67,6 +73,20 @@
       language: {
         url: "{% static "DataTables-1.13.6/js/ru.json" %}",
       },
+    });
+  </script>
+  <script>
+    document.getElementById('submitResultsButton').addEventListener('click', function() {
+      var checkboxes = document.querySelectorAll('.resultCheckbox');
+      var selectedResults = [];
+      checkboxes.forEach(function(checkbox) {
+          if (checkbox.checked) {
+            selectedResults.push(checkbox.value);
+          }
+      });
+      if (selectedResults.length > 0) {
+        window.location.href = '{% url 'results:marked_results_table' %}?results=' + selectedResults.join(',');
+      }
     });
   </script>
 {% endblock content %}

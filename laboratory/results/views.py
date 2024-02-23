@@ -96,5 +96,15 @@ def result_edit(request, result_id):
 
 
 @permission_required('results.view_result', raise_exception=True)
+def marked_results_table(request):
+    marked_results = request.GET.get('results', None)
+    if marked_results:
+        marked_results = marked_results.split(',')
+        return results_table_xlsx(marked_results)
+    else:
+        return redirect('results:index')
+
+
+@permission_required('results.view_result', raise_exception=True)
 def results_table(request):
     return results_table_xlsx()

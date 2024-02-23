@@ -10,5 +10,7 @@ urlpatterns = [
     path('nutrition_create/',
          views.result_nutrition_create, name='nutrition_create'),
     path('<int:result_id>/', views.result_edit, name='edit'),
+    path('marked_results_table/', views.marked_results_table,
+         name='marked_results_table'),
     path('results_table/', views.results_table, name='results_table'),
 ]
