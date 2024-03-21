@@ -34,10 +34,14 @@
             {% csrf_token %}
             <div class="col-md-12">
               <label for="id_name">
-                Название нормативного документа
+                Название (например, "Масло сливочное. Технические условия")
                 <span class="required text-danger">*</span>
               </label>
               {{ form.name|addclass:"form-control" }}
+            </div>
+            <div class="col-md-12">
+              <label for="id_standard">Нормативный документ (например, "ГОСТ 32261-2013")</label>
+              {{ form.standard|addclass:"form-control" }}
             </div>
             <div class="col-md-6">
               <label for="id_file">

@@ -6,12 +6,13 @@
 {% block content %}
   <h1>Реактивы</h1>
   <a href="{% url 'reagents:create' %}" class="btn btn-primary mb-4">Добавить реактив</a>
-  <a href="{% url 'reagents:reagents_table' %}" class="btn btn-primary mb-4">Скачать таблицу реактивов</a>
+  <a href="{% url 'reagents:reagents_table' %}"
+     class="btn btn-primary mb-4">Скачать таблицу реактивов</a>
   <a href="https://t.me/reagents_lab_helper_bot"
      class="btn mb-4"
      style="background-color:#229ED9;
             color: #ffffff;
-            border-color: #229ED9;"
+            border-color: #229ED9"
      target="_blank">Telegram бот</a>
   <table class="table" id="sortTable">
     <thead>
@@ -31,8 +32,12 @@
             {% if reagent.index %}{{ reagent.index }}{% endif %}
           </td>
           <td>
-            <a href="{% url 'reagents:edit' reagent.id %}"
-               class="text-decoration-none">{{ reagent.name }}</a>
+            {% if perms.reagents.change_reagent %}
+              <a href="{% url 'reagents:edit' reagent.id %}"
+                 class="text-decoration-none">{{ reagent.name }}</a>
+            {% else %}
+              {{ reagent.name }}
+            {% endif %}
           </td>
           <td>
             {% if reagent.grade %}{{ reagent.grade }}{% endif %}
@@ -53,8 +58,8 @@
   <script>
     new DataTable('#sortTable', {
       lengthMenu: [
-        [10, 50, 100, -1],
-        [10, 50, 100, 'Все']
+        [-1, 10, 50, 100],
+        ['Все', 10, 50, 100]
       ],
       language: {
         url: "{% static "DataTables-1.13.6/js/ru.json" %}",

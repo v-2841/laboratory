@@ -9,7 +9,8 @@
   <table class="table" id="sortTable">
     <thead>
       <tr>
-        <th scope="col">Название нормативного документа</th>
+        <th scope="col">Название</th>
+        <th scope="col">Нормативный документ</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -20,6 +21,9 @@
             <a href="{{ document.file.url }}"
                class="text-decoration-none"
                target="_blank">{{ document.name }}</a>
+          </td>
+          <td>
+            {% if document.standard %}{{ document.standard }}{% endif %}
           </td>
           <td>
             {% if perms.documents.change_document %}
@@ -36,12 +40,12 @@
       ordering: false,
       columnDefs: [
       {
-        targets: 1,
+        targets: 2,
         className: 'dt-body-right'
       }],
       lengthMenu: [
-        [10, 50, 100, -1],
-        [10, 50, 100, 'Все']
+        [-1, 10, 50, 100],
+        ['Все', 10, 50, 100]
       ],
       language: {
         url: "{% static "DataTables-1.13.6/js/ru.json" %}",
