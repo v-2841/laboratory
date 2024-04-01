@@ -10,6 +10,7 @@ urlpatterns = [
     path('reagents/', include('reagents.urls', namespace='reagents')),
     path('results/', include('results.urls', namespace='results')),
     path('documents/', include('documents.urls', namespace='documents')),
+    path('api/', include('api.urls')),
     path('', include('laboratories.urls', namespace='laboratories')),
 ]
 handler403 = 'core.views.permission_denied'

@@ -21,12 +21,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'users.apps.UsersConfig',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
+    'api.apps.ApiConfig',
+    'core.apps.CoreConfig',
+    'documents.apps.DocumentsConfig',
     'laboratories.apps.LaboratoriesConfig',
     'reagents.apps.ReagentsConfig',
     'results.apps.ResultsConfig',
-    'core.apps.CoreConfig',
-    'documents.apps.DocumentsConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +123,9 @@ LOGIN_REDIRECT_URL = 'laboratories:main'
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 CSRF_TRUSTED_ORIGINS = ['https://laboratory.sytes.net', 'http://laboratory.sytes.net']
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}

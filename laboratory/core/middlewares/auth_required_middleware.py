@@ -12,6 +12,7 @@ class AuthRequiredMiddleware(object):
         if (not request.user.is_authenticated
                 and request.path != reverse('users:login')
                 and request.path != reverse('laboratories:main')
+                and not re.match(r'^/api/', request.path)
                 and not re.match(r'^/admin/', request.path)):
             return redirect(
                 f"{reverse('users:login')}?next={request.path}")
