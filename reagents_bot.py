@@ -78,10 +78,12 @@ async def post_init(application: Application) -> None:
         host=os.getenv('DB_HOST', 'localhost'),
         port=os.getenv('DB_PORT', 5432),
     )
+    logger.info('База данных подключена')
 
 
 async def post_shutdown(application: Application) -> None:
     await application.bot_data['database'].close()
+    logger.info('База данных отключена')
 
 
 if __name__ == '__main__':
