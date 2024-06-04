@@ -145,7 +145,4 @@ dmypy.json
 
 .mypy_cache
 
-# папки со статикой и медиа
-laboratory/media/
-laboratory/static/admin/
 bot_logs/
