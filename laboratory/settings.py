@@ -122,7 +122,7 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'laboratories:main'
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
-CSRF_TRUSTED_ORIGINS = ['https://laboratory.sytes.net', 'http://laboratory.sytes.net']
+CSRF_TRUSTED_ORIGINS = [i.strip() for i in os.getenv('CSRF_TRUSTED_ORIGINS', '127.0.0.1, localhost').split(',')]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
